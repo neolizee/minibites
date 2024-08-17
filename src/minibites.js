@@ -18,3 +18,33 @@ export const useHasClass = (element, className) => {
   className = " " + className + " ";
   return classNames.replace(/[\r\n\t\f]+/g, " ").indexOf(className) > -1;
 };
+
+// Создание списка с уникальными значениями
+export const useUniqueList = (arrayWithObject, property) => {
+  if (!arrayWithObject || !property) {
+    return [];
+  }
+
+  return (
+    Array.from(
+      new Set(arrayWithObject.map(({ [property]: key }) => key).filter(Boolean))
+    ).sort() || []
+  );
+};
+
+// Создание списка с уникальными значениями по населённым пунктам
+export const useUniqueRegion = (arrayWithObject, property, isFirstItem) => {
+  if (!arrayWithObject || !property) {
+    return [];
+  }
+
+  return Array.from(
+    new Set(
+      arrayWithObject
+        .flatMap(({ [property]: key }) => key?.split(/\s*[,]\s*/g) || [])
+        .filter(Boolean)
+    )
+  ).sort((a, b) =>
+    a === isFirstItem ? -1 : b === isFirstItem ? 1 : a.localeCompare(b)
+  );
+};

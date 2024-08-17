@@ -5,7 +5,7 @@
   "type": "module",
   "main": "src/minibites.js",
   "scripts": {
-    "dev": "node minibites.js"
+    "dev": "node src/minibites.js"
   },
   "files": [
     "src"
