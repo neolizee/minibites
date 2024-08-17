@@ -12,15 +12,12 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/neolizee/minibites.git"
+    "url": "git://github.com/neolizee/minibites.git"
   },
   "author": "Anton Kulikov",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/neolizee/minibites/issues"
   },
-  "homepage": "https://github.com/neolizee/minibites#readme",
-  "dependencies": {
-    "minibites": "https://github.com/neolizee/minibites.git"
-  }
+  "homepage": "https://github.com/neolizee/minibites#readme"
 }
