@@ -19,5 +19,8 @@
   "bugs": {
     "url": "https://github.com/neolizee/minibites/issues"
   },
-  "homepage": "https://github.com/neolizee/minibites#readme"
+  "homepage": "https://github.com/neolizee/minibites#readme",
+  "dependencies": {
+    "minibites": "https://github.com/neolizee/minibites.git"
+  }
 }
