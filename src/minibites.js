@@ -58,7 +58,7 @@ export const useUniqueRegion = (arrayWithObject, property, isFirstItem) => {
   );
 };
 
-/* Преобразование данных в Hashing Map ------------------------------------------------------------------------------------------------------------------------ */
+/* Преобразование данных в Hashing Map -------------------------------------------------------------------------------------------- */
 
 const useHashingMap = (data, property) => {
   // Проверяем наличие входных значений || []
@@ -91,3 +91,78 @@ useHashingMap.size();
 
 // Удаление всех элементов
 useHashingMap.clear();
+
+/* Связанный список --------------------------------------------------------------------------------------------------------------- */
+
+// Класс создания ноды
+export class Node {
+  constructor(value, next = null) {
+    this.value = value;
+    this.next = next;
+  }
+}
+
+// Класс создания связанного списка
+export class LinkedList {
+  constructor() {
+    this.head = null;
+  }
+
+  // Создание нового узла в конце списка
+  add(value) {
+    const newNode = new Node(value);
+    if (!this.head) {
+      this.head = newNode;
+    } else {
+      let current = this.head;
+      while (current.next) {
+        current = current.next;
+      }
+      current.next = newNode;
+    }
+  }
+
+  // Вывод в консоль всех узлов
+  print() {
+    let current = this.head;
+    while (current) {
+      console.log(current.value);
+      current = current.next;
+    }
+  }
+
+  // Удаление узла из списка
+  delete(value) {
+    if (this.head && this.head.value === value) {
+      this.head = this.head.next;
+    } else {
+      let current = this.head;
+      while (current && current.next) {
+        if (current.next.value === value) {
+          current.next = current.next.next;
+          return;
+        }
+        current = current.next;
+      }
+    }
+  }
+
+  // Поиск узла в списке и вывод в консоль
+  find(value) {
+    let current = this.head;
+    while (current) {
+      if (current.value === value) {
+        return current;
+      }
+      current = current.next;
+    }
+    return null;
+  }
+}
+
+/* const newList = new LinkedList();
+newList.add(10);
+newList.add(20);
+newList.add(30);
+newList.print();
+console.log(newList.find(30)); */
