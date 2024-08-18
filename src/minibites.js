@@ -166,3 +166,15 @@ newList.add(20);
 newList.add(30);
 newList.print();
 console.log(newList.find(30)); */
+
+/* Факториал ---------------------------------------------------------------------------------------------------------------------- */
+
+export const factorial = (value) =>
+  value <= 1 ? value : value * factorial(value - 1);
+
+/* Формирование UUID v4 ----------------------------------------------------------------------------------------------------------- */
+
+export const uuid = () =>
+  ([1e7] + -1e3 + -1e3 + -1e3 + -1e11).replace(/[01]/g, () =>
+    (crypto.getRandomValues(new Uint8Array(1))[0] & 15).toString(16)
+  );
