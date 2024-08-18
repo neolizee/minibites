@@ -1,6 +1,6 @@
 /* Форматирование числа в денежную единицу Российской Федерации ------------------------------------------------------------------ */
 
-export const useNumFormat = (number, maximumFractionDigits) => {
+export const useNumberFormat = (number, maximumFractionDigits) => {
   if (number != null) {
     return new Intl.NumberFormat("ru-RU", {
       maximumFractionDigits: maximumFractionDigits ?? 0,
@@ -14,6 +14,11 @@ export const useNumFormat = (number, maximumFractionDigits) => {
 /* Проверка класса HTML элемента -------------------------------------------------------------------------------------------------- */
 
 export const useHasClass = (element, className) => {
+  // Проверяем наличие входных значений || false
+  if (!element || !className) {
+    return false;
+  }
+
   const classNames = " " + element.className + " ";
   className = " " + className + " ";
   return classNames.replace(/[\r\n\t\f]+/g, " ").indexOf(className) > -1;
@@ -22,6 +27,7 @@ export const useHasClass = (element, className) => {
 /* Создание списка с уникальными значениями --------------------------------------------------------------------------------------- */
 
 export const useUniqueList = (arrayWithObject, property) => {
+  // Проверяем наличие входных значений || []
   if (!arrayWithObject || !property) {
     return [];
   }
@@ -36,6 +42,7 @@ export const useUniqueList = (arrayWithObject, property) => {
 /* Создание списка с уникальными значениями по населённым пунктам ----------------------------------------------------------------- */
 
 export const useUniqueRegion = (arrayWithObject, property, isFirstItem) => {
+  // Проверяем наличие входных значений || []
   if (!arrayWithObject || !property) {
     return [];
   }
@@ -53,29 +60,34 @@ export const useUniqueRegion = (arrayWithObject, property, isFirstItem) => {
 
 /* Преобразование данных в Hashing Map ------------------------------------------------------------------------------------------------------------------------ */
 
-const hashingMap = (data, property) =>
-  new Map(data.map(({ [property]: key }) => [key, element]));
+const useHashingMap = (data, property) => {
+  // Проверяем наличие входных значений || []
+  if (!data || !property) {
+    return [];
+  }
 
+  return new Map(data.map(({ [property]: key }) => [key, element]));
+};
 // Поиск элемента
-hashingMap.get("string");
+useHashingMap.get("string");
 
 // Добавление элемента
-hashingMap.set("string", newItem);
+useHashingMap.set("string", newItem);
 
 // Удаление элемента
-hashingMap.delete("string");
+useHashingMap.delete("string");
 
 // Проверка элемента
-hashingMap.has("string");
+useHashingMap.has("string");
 
 // Интерация по ключам
-hashingMap.keys();
+useHashingMap.keys();
 
 // Интерация по значениям
-hashingMap.values();
+useHashingMap.values();
 
 // Вывести количество элементов
-hashingMap.size();
+useHashingMap.size();
 
 // Удаление всех элементов
-hashingMap.clear();
+useHashingMap.clear();
