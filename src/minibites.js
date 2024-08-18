@@ -19,7 +19,8 @@ export const useHasClass = (element, className) => {
   return classNames.replace(/[\r\n\t\f]+/g, " ").indexOf(className) > -1;
 };
 
-// Создание списка с уникальными значениями
+/* Создание списка с уникальными значениями --------------------------------------------------------------------------------------- */
+
 export const useUniqueList = (arrayWithObject, property) => {
   if (!arrayWithObject || !property) {
     return [];
@@ -32,7 +33,8 @@ export const useUniqueList = (arrayWithObject, property) => {
   );
 };
 
-// Создание списка с уникальными значениями по населённым пунктам
+/* Создание списка с уникальными значениями по населённым пунктам ----------------------------------------------------------------- */
+
 export const useUniqueRegion = (arrayWithObject, property, isFirstItem) => {
   if (!arrayWithObject || !property) {
     return [];
@@ -48,3 +50,32 @@ export const useUniqueRegion = (arrayWithObject, property, isFirstItem) => {
     a === isFirstItem ? -1 : b === isFirstItem ? 1 : a.localeCompare(b)
   );
 };
+
+/* Преобразование данных в Hashing Map ------------------------------------------------------------------------------------------------------------------------ */
+
+const hashingMap = (data, property) =>
+  new Map(data.map(({ [property]: key }) => [key, element]));
+
+// Поиск элемента
+hashingMap.get("string");
+
+// Добавление элемента
+hashingMap.set("string", newItem);
+
+// Удаление элемента
+hashingMap.delete("string");
+
+// Проверка элемента
+hashingMap.has("string");
+
+// Интерация по ключам
+hashingMap.keys();
+
+// Интерация по значениям
+hashingMap.values();
+
+// Вывести количество элементов
+hashingMap.size();
+
+// Удаление всех элементов
+hashingMap.clear();
