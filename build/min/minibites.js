@@ -1,0 +1,1 @@
+"use strict";exports.useHEXToRGB=function(t){var r=parseInt(t.substring(1),16);return{r:r>>16&255,g:r>>8&255,b:255&r}},exports.useRGBToHEX=function(t,r,n){return"#".concat(t.toString(16).padStart(2,"0")).concat(r.toString(16).padStart(2,"0")).concat(n.toString(16).padStart(2,"0"))};
