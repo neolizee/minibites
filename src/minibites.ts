@@ -26,11 +26,11 @@ export const useNumberFormat = (number: number, maximumFractionDigits: number = 
 
 /* Вычисление факториала ------------------------------------------------------------------------------------------------------------------------- - */
 
-export const factorial = (number: number): number => (number <= 1 ? number : number * factorial(number - 1));
+export const useFactorial = (number: number): number => (number <= 1 ? number : number * useFactorial(number - 1));
 
 /* Создание UUID v4 ---------------------------------------------------------------------------------------------------------------- */
 
-export const uuid = (): string => crypto.randomUUID();
+export const useUUID = (): string => crypto.randomUUID();
 
 /* Форматирование HEX в RGB --------------------------------------------------------------------------------------------------------------------------- */
 
@@ -135,7 +135,7 @@ export class Node {
 }
 
 // Класс создания связанного списка
-export class LinkedList {
+export class CreateLinkedList {
   head: Node | null;
 
   constructor() {
