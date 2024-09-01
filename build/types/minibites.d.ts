@@ -1,7 +1,7 @@
 export declare const useHasClass: (element: HTMLElement | null, className: string) => boolean;
 export declare const useNumberFormat: (number: number, maximumFractionDigits?: number) => string;
-export declare const factorial: (number: number) => number;
-export declare const uuid: () => string;
+export declare const useFactorial: (number: number) => number;
+export declare const useUUID: () => string;
 export declare const useHEXToRGB: (hex: string) => {
     r: number;
     g: number;
@@ -16,7 +16,7 @@ export declare class Node {
     next: Node | null;
     constructor(value: any, next?: Node | null);
 }
-export declare class LinkedList {
+export declare class CreateLinkedList {
     head: Node | null;
     constructor();
     add(value: any): void;

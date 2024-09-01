@@ -1,4 +1,4 @@
-## MiniBites
+# MiniBites
 
 Библиотека содержит коллекцию компонентов, полезных функций и поможет вам сократить время разработки.
 
@@ -6,6 +6,14 @@
 
 ```bash
 npm i minibites
+```
+
+## Импорт
+
+```bash
+import { useUUID } from 'minibites';
+
+console.log(useUUID()); // UUID
 ```
 
 ## Содержание

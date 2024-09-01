@@ -22,9 +22,9 @@ const useNumberFormat = (number, maximumFractionDigits = 0) => {
     return "";
 };
 /* Вычисление факториала ------------------------------------------------------------------------------------------------------------------------- - */
-const factorial = (number) => (number <= 1 ? number : number * factorial(number - 1));
+const useFactorial = (number) => (number <= 1 ? number : number * useFactorial(number - 1));
 /* Создание UUID v4 ---------------------------------------------------------------------------------------------------------------- */
-const uuid = () => crypto.randomUUID();
+const useUUID = () => crypto.randomUUID();
 /* Форматирование HEX в RGB --------------------------------------------------------------------------------------------------------------------------- */
 const useHEXToRGB = (hex) => {
     const bigint = parseInt(hex.substring(1), 16);
@@ -110,7 +110,7 @@ class Node {
     }
 }
 // Класс создания связанного списка
-class LinkedList {
+class CreateLinkedList {
     constructor() {
         this.head = null;
     }
@@ -165,14 +165,14 @@ class LinkedList {
     }
 }
 
-exports.LinkedList = LinkedList;
+exports.CreateLinkedList = CreateLinkedList;
 exports.Node = Node;
-exports.factorial = factorial;
 exports.useBinarySearch = useBinarySearch;
+exports.useFactorial = useFactorial;
 exports.useHEXToRGB = useHEXToRGB;
 exports.useHasClass = useHasClass;
 exports.useHashingMap = useHashingMap;
 exports.useNumberFormat = useNumberFormat;
 exports.useRGBAToHEX = useRGBAToHEX;
 exports.useRGBToHEX = useRGBToHEX;
-exports.uuid = uuid;
+exports.useUUID = useUUID;
