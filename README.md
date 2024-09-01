@@ -14,19 +14,19 @@ npm i minibites
 - [Форматирование RGB в HEX](#Форматирование-RGB-в-HEX)
 - [Форматирование RGBA в HEX](#Форматирование-RGBA-в-HEX)
 
-## Форматирование HEX в RGB
+### Форматирование HEX в RGB
 
 ```bash
 useHEXToRGB();
 ```
 
-## Форматирование RGB в HEX
+### Форматирование RGB в HEX
 
 ```bash
 useRGBToHEX();
 ```
 
-## Форматирование RGBA в HEX
+### Форматирование RGBA в HEX
 
 ```bash
 useRGBAToHEX();

@@ -30,7 +30,7 @@ export const useFactorial = (number: number): number => (number <= 1 ? number : 
 
 /* Создание UUID v4 ---------------------------------------------------------------------------------------------------------------- */
 
-export const useUUID = (): string => crypto.randomUUID();
+export const uuid = (): string => crypto.randomUUID();
 
 /* Форматирование HEX в RGB --------------------------------------------------------------------------------------------------------------------------- */
 

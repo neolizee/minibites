@@ -1,10 +1,11 @@
 {
   "name": "minibites",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "",
   "type": "module",
-  "main": "./build/cjs/minibites.js",
-  "module": "./build/esm/minibites.js",
+  "main": "./build/cjs/minibites",
+  "module": "./build/esm/minibites",
+  "types": "build/types/minibites",
   "scripts": {
     "dev": "nodemon --exec tsx src/minibites.ts",
     "build": "rollup --config"

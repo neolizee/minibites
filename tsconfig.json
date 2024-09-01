@@ -9,7 +9,8 @@
     "declarationDir": "build/types",
     "moduleResolution": "node",
     "allowSyntheticDefaultImports": true,
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "strict": true
   },
   "include": ["src"],
   "exclude": ["node_modules", "build"]
