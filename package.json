@@ -1,17 +1,14 @@
 {
   "name": "minibites",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "",
   "type": "module",
   "main": "./build/cjs/index.js",
   "module": "./build/esm/index.js",
   "scripts": {
-    "dev": "node src/minibites.js",
+    "dev": "nodemon --exec tsx src/minibites.ts",
     "build": "rollup --config"
   },
-  "files": [
-    "src"
-  ],
   "repository": {
     "type": "git",
     "url": "git://github.com/neolizee/minibites.git"
@@ -23,7 +20,12 @@
   },
   "homepage": "https://github.com/neolizee/minibites#readme",
   "devDependencies": {
+    "@rollup/plugin-terser": "^0.4.4",
+    "nodemon": "^3.1.4",
     "rollup": "^4.21.2",
+    "rollup-plugin-typescript2": "^0.36.0",
+    "ts-node": "^10.9.2",
+    "tsx": "^4.19.0",
     "typescript": "^5.5.4"
   }
 }
