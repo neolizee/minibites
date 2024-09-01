@@ -15,6 +15,9 @@ npm i minibites
 - [Форматирование RGB в HEX](#Форматирование-RGB-в-HEX)
 - [Форматирование RGBA в HEX](#Форматирование-RGBA-в-HEX)
 - [Проверка класса HTML элемента](#Проверка-класса-HTML-элемента)
+- [Бинарный поиск](#Бинарный-поиск)
+- [Форматирование в денежную единицу Российской Федерации](#Форматирование-в-денежную-единицу-Российской-Федерации)
+- [Вычисление факториала](#Вычисление-факториала)
 
 ### Создание UUID v4
 
@@ -64,4 +67,34 @@ import { useHasClass } from "minibites";
 console.log(useHasClass(document.getElementById("element"), "className"));
 
 // true
+```
+
+### Бинарный поиск
+
+```js
+import { useBinarySearch } from "minibites";
+
+console.log(useBinarySearch([60, 30, 25, 70, 80], 25));
+
+// Index 2
+```
+
+### Форматирование в денежную единицу Российской Федерации
+
+```js
+import { useNumberFormat } from "minibites";
+
+console.log(useNumberFormat(5000, 2));
+
+// 5 000,00 ₽
+```
+
+### Вычисление факториала
+
+```js
+import { useFactorial } from "minibites";
+
+console.log(useFactorial(3));
+
+// 6
 ```
