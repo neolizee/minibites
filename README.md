@@ -1,6 +1,6 @@
 # MiniBites
 
-Библиотека содержит набор компонентов, полезных функций и поможет вам сократить время разработки.
+Библиотека содержит набор компонентов, полезных функций и помогает сократить время разработки.
 
 ## Установка
 
@@ -18,6 +18,9 @@ npm i minibites
 - [Бинарный поиск](#Бинарный-поиск)
 - [Форматирование в денежную единицу Российской Федерации](#Форматирование-в-денежную-единицу-Российской-Федерации)
 - [Вычисление факториала](#Вычисление-факториала)
+- [Сортировка Quick](#Сортировка-Quick)
+- [Сортировка Tim](#Сортировка-Tim)
+- [Форматирование массива в HashMap](#Форматирование-массива-в-HashMap)
 
 ### Создание UUID v4
 
@@ -25,8 +28,6 @@ npm i minibites
 import { useUUID } from "minibites";
 
 console.log(useUUID());
-
-// 6309464c-77f8-4463-b325-eed2420ff52b
 ```
 
 ### Форматирование HEX в RGB
@@ -35,8 +36,6 @@ console.log(useUUID());
 import { useHEXToRGB } from "minibites";
 
 console.log(useHEXToRGB("#ffffff"));
-
-// { r: 255, g: 255, b: 255 }
 ```
 
 ### Форматирование RGB в HEX
@@ -45,8 +44,6 @@ console.log(useHEXToRGB("#ffffff"));
 import { useRGBToHEX } from "minibites";
 
 console.log(useRGBToHEX(255, 255, 255));
-
-// #ffffff
 ```
 
 ### Форматирование RGBA в HEX
@@ -55,8 +52,6 @@ console.log(useRGBToHEX(255, 255, 255));
 import { useRGBAToHEX } from "minibites";
 
 console.log(useRGBAToHEX(255, 255, 255, 0.5));
-
-// #ffffff80
 ```
 
 ### Проверка класса HTML элемента
@@ -64,9 +59,7 @@ console.log(useRGBAToHEX(255, 255, 255, 0.5));
 ```js
 import { useHasClass } from "minibites";
 
-console.log(useHasClass(document.getElementById("element"), "className"));
-
-// true
+console.log(useHasClass(document.querySelector("#element"), "className"));
 ```
 
 ### Бинарный поиск
@@ -74,9 +67,7 @@ console.log(useHasClass(document.getElementById("element"), "className"));
 ```js
 import { useBinarySearch } from "minibites";
 
-console.log(useBinarySearch([60, 30, 25, 70, 80], 25));
-
-// Index 2
+console.log(useBinarySearch([10, 25, 50, 100, 200], 50)); // Только отсортированные массивы
 ```
 
 ### Форматирование в денежную единицу Российской Федерации
@@ -85,8 +76,6 @@ console.log(useBinarySearch([60, 30, 25, 70, 80], 25));
 import { useNumberFormat } from "minibites";
 
 console.log(useNumberFormat(5000, 2));
-
-// 5 000,00 ₽
 ```
 
 ### Вычисление факториала
@@ -95,6 +84,62 @@ console.log(useNumberFormat(5000, 2));
 import { useFactorial } from "minibites";
 
 console.log(useFactorial(3));
+```
 
-// 6
+### Сортировка Quick
+
+```js
+import { useQuickSort } from "minibites";
+
+console.log(useQuickSort([60, 80, 30, 25, 5, 100]));
+```
+
+### Сортировка Tim
+
+```js
+import { useTimSort, useInsertionSort, useMergeSort } from "minibites";
+
+console.log(useTimSort([60, 80, 30, 25, 5, 100]));
+```
+
+### Форматирование массива в HashMap
+
+HashMap — это структура данных, которая позволяет хранить и быстро находить данные по уникальным ключам.
+
+```js
+import { useHashMap } from "minibites";
+
+console.log(
+  useHashMap(
+    [
+      { user: "User 1", age: 25 },
+      { user: "User 2", age: 50 },
+    ],
+    "user"
+  )
+);
+
+// Поиск элемента
+useHashMap.get("String");
+
+// Добавление элемента
+useHashMap.set("String", newItem);
+
+// Удаление элемента
+useHashMap.delete("String");
+
+// Проверка элемента
+useHashMap.has("String");
+
+// Интерация по ключам
+useHashMap.keys();
+
+// Интерация по значениям
+useHashMap.values();
+
+// Вывести количество элементов
+useHashMap.size();
+
+// Удаление всех элементов
+useHashMap.clear();
 ```

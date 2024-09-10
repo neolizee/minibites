@@ -51,15 +51,15 @@ const useRGBAToHEX = (r, g, b, a) => {
         .padStart(2, "0"));
 };
 /* Бинарный поиск ----------------------------------------------------------------------------------------------------------------------- */
-const useBinarySearch = (collection, number) => {
+const useBinarySearch = (collection, target) => {
     let low = 0;
     let high = collection.length - 1;
     while (low <= high) {
         const mid = Math.floor((low + high) / 2);
-        if (number === collection[mid]) {
+        if (target === collection[mid]) {
             return mid;
         }
-        if (number > collection[mid]) {
+        if (target > collection[mid]) {
             low = mid + 1;
         }
         else {
@@ -68,39 +68,87 @@ const useBinarySearch = (collection, number) => {
     }
     return -1;
 };
-/* Форматирование в Hashing Map --------------------------------------------------------------------------------------------------------- */
-const useHashingMap = (collection, property) => {
+/* Сортировка Quick ----------------------------------------------------------------------------------------------------------------- */
+const useQuickSort = (collection) => {
+    if (collection.length <= 1)
+        return collection;
+    const target = collection[Math.floor(collection.length / 2)];
+    const low = [];
+    const high = [];
+    for (let i = 0; i < collection.length; i++) {
+        if (i === Math.floor(collection.length / 2))
+            continue;
+        if (collection[i] < target) {
+            low.push(collection[i]);
+        }
+        else {
+            high.push(collection[i]);
+        }
+    }
+    return [...useQuickSort(low), target, ...useQuickSort(high)];
+};
+/* Сортировка Insertion ------------------------------------------------------------------------------------------------------------------- */
+const useInsertionSort = (collection, low, high) => {
+    for (let i = low + 1; i <= high; i++) {
+        let key = collection[i];
+        let j = i - 1;
+        while (j >= low && collection[j] > key) {
+            collection[j + 1] = collection[j];
+            j--;
+        }
+        collection[j + 1] = key;
+    }
+};
+/* Сортировка Merge ------------------------------------------------------------------------------------------------------------------- */
+const useMergeSort = (collection, low, mid, high) => {
+    let left = collection.slice(low, mid + 1);
+    let right = collection.slice(mid + 1, high + 1);
+    let i = 0, j = 0, k = low;
+    while (i < left.length && j < right.length) {
+        if (left[i] <= right[j]) {
+            collection[k] = left[i];
+            i++;
+        }
+        else {
+            collection[k] = right[j];
+            j++;
+        }
+        k++;
+    }
+    while (i < left.length) {
+        collection[k] = left[i];
+        i++;
+        k++;
+    }
+    while (j < right.length) {
+        collection[k] = right[j];
+        j++;
+        k++;
+    }
+};
+/* Сортировка Tim ------------------------------------------------------------------------------------------------------------------- */
+const useTimSort = (collection) => {
+    const start = 32;
+    for (let i = 0; i < collection.length; i += start)
+        useInsertionSort(collection, i, Math.min(i + 31, collection.length - 1));
+    for (let size = start; size < collection.length; size = 2 * size) {
+        for (let low = 0; low < collection.length; low += 2 * size) {
+            let mid = low + size - 1;
+            let high = Math.min(low + 2 * size - 1, collection.length - 1);
+            if (mid < high)
+                useMergeSort(collection, low, mid, high);
+        }
+    }
+    return collection;
+};
+/* Форматирование в HashMap --------------------------------------------------------------------------------------------------------- */
+const useHashMap = (collection, property) => {
     // Проверяем наличие входных значений || []
     if (!collection || !property) {
         return new Map();
     }
     return new Map(collection.map((item) => [item[property], item]));
 };
-/*
-// Поиск элемента
-useHashingMap.get("string");
-
-// Добавление элемента
-useHashingMap.set("string", newItem);
-
-// Удаление элемента
-useHashingMap.delete("string");
-
-// Проверка элемента
-useHashingMap.has("string");
-
-// Интерация по ключам
-useHashingMap.keys();
-
-// Интерация по значениям
-useHashingMap.values();
-
-// Вывести количество элементов
-useHashingMap.size();
-
-// Удаление всех элементов
-useHashingMap.clear();
-*/
 /* Связанный список --------------------------------------------------------------------------------------------------------------------- */
 // Класс создания ноды
 class Node {
@@ -171,8 +219,12 @@ exports.useBinarySearch = useBinarySearch;
 exports.useFactorial = useFactorial;
 exports.useHEXToRGB = useHEXToRGB;
 exports.useHasClass = useHasClass;
-exports.useHashingMap = useHashingMap;
+exports.useHashMap = useHashMap;
+exports.useInsertionSort = useInsertionSort;
+exports.useMergeSort = useMergeSort;
 exports.useNumberFormat = useNumberFormat;
+exports.useQuickSort = useQuickSort;
 exports.useRGBAToHEX = useRGBAToHEX;
 exports.useRGBToHEX = useRGBToHEX;
+exports.useTimSort = useTimSort;
 exports.useUUID = useUUID;

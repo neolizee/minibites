@@ -9,8 +9,12 @@ export declare const useHEXToRGB: (hex: string) => {
 };
 export declare const useRGBToHEX: (r: number, g: number, b: number) => string;
 export declare const useRGBAToHEX: (r: number, g: number, b: number, a: number) => string;
-export declare const useBinarySearch: (collection: number[], number: number) => number;
-export declare const useHashingMap: (collection: any[], property: string) => Map<any, any>;
+export declare const useBinarySearch: (collection: number[], target: number) => number;
+export declare const useQuickSort: (collection: number[]) => number[];
+export declare const useInsertionSort: (collection: number[], low: number, high: number) => void;
+export declare const useMergeSort: (collection: number[], low: number, mid: number, high: number) => void;
+export declare const useTimSort: (collection: number[]) => number[];
+export declare const useHashMap: (collection: any[], property: string) => Map<any, any>;
 export declare class Node {
     value: any;
     next: Node | null;
