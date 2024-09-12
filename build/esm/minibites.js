@@ -81,18 +81,22 @@ const useHSLAToRGBA = (hue, saturation, lightness, alpha) => {
 };
 /* Бинарный поиск ----------------------------------------------------------------------------------------------------------------------- */
 const useBinarySearch = (collection, target) => {
+    if (!Array.isArray(collection) || collection.length === 0) {
+        throw new Error("Значение не может быть пустым массивом!");
+    }
     let low = 0;
     let high = collection.length - 1;
     while (low <= high) {
         const mid = Math.floor((low + high) / 2);
-        if (target === collection[mid]) {
+        const midValue = collection[mid];
+        if (target === midValue) {
             return mid;
         }
-        if (target > collection[mid]) {
-            low = mid + 1;
+        if (target < midValue) {
+            high = mid - 1;
         }
         else {
-            high = mid - 1;
+            low = mid + 1;
         }
     }
     return -1;
@@ -174,27 +178,30 @@ const useTimSort = (collection) => {
 const useFlashSort = (collection) => {
     const n = collection.length;
     if (n <= 1)
-        return collection;
-    let min = Math.min(...collection);
-    let max = Math.max(...collection);
+        return collection; // Коллекция отсортирована
+    const min = Math.min(...collection);
+    const max = Math.max(...collection);
     if (min === max)
-        return collection;
+        return collection; // Все элементы равны
     const m = Math.floor(0.45 * n);
     const l = new Array(m).fill(0);
     const c1 = (m - 1) / (max - min);
+    // Подсчёт количества элементов в каждом блоке
     collection.forEach((num) => {
         const k = Math.floor(c1 * (num - min));
         l[k]++;
     });
+    // Преобразование левых границ блока в префиксные суммы
     for (let p = 1; p < m; ++p) {
         l[p] += l[p - 1];
     }
-    let hold = collection[0];
-    collection[0] = collection[collection.indexOf(max)];
-    collection[collection.indexOf(max)] = hold;
+    // Сортировка максимального элемента в начало
+    const maxIndex = collection.lastIndexOf(max);
+    [collection[0], collection[maxIndex]] = [collection[maxIndex], collection[0]];
     let move = 0;
     let j = 0;
     let k = m - 1;
+    // Основная часть сортировки
     while (move < n - 1) {
         while (j > l[k] - 1) {
             ++j;
@@ -205,30 +212,38 @@ const useFlashSort = (collection) => {
         let flash = collection[j];
         while (j !== l[k]) {
             k = Math.floor(c1 * (flash - min));
-            hold = collection[--l[k]];
+            const hold = collection[--l[k]];
             collection[l[k]] = flash;
             flash = hold;
             ++move;
         }
     }
-    for (j = 1; j < n; j++) {
-        hold = collection[j];
-        let i = j - 1;
-        while (i >= 0 && collection[i] > hold) {
-            collection[i + 1] = collection[i];
-            i--;
+    // Вставка окончательной сортировки
+    for (let i = 1; i < n; i++) {
+        const hold = collection[i];
+        let j = i - 1;
+        while (j >= 0 && collection[j] > hold) {
+            collection[j + 1] = collection[j];
+            j--;
         }
-        collection[i + 1] = hold;
+        collection[j + 1] = hold;
     }
     return collection;
 };
 /* Форматирование в HashMap ------------------------------------------------------------------------------------------------------------- */
 const useHashMap = (collection, property) => {
-    // Проверяем наличие входных значений || []
     if (!collection || !property) {
         return new Map();
     }
-    return new Map(collection.map((item) => [item[property], item]));
+    return new Map(collection.map((item) => {
+        if (property in item) {
+            return [item[property], item];
+        }
+        else {
+            console.warn("Свойство не найдено!");
+            return ["", item];
+        }
+    }));
 };
 /* Связанный список --------------------------------------------------------------------------------------------------------------------- */
 // Класс создания ноды
@@ -293,32 +308,43 @@ class CreateLinkedList {
         return null;
     }
 }
-/* Проверка корректности ввода номера банковской карты (Алгоритм Луна) ------------------------------------------------------------------------- */
+/* Проверка корректности ввода номера банковской карты (Алгоритм Луна) ------------------------------------------------------------------ */
 const useCheckCreditCard = (number) => {
-    const num = String(number).replace(/\D/g, "");
-    if (num === "")
+    // Оставляем только цифры
+    const num = number.replace(/\D/g, "");
+    // Проверяем на пустое значение
+    if (num.length === 0)
         return false;
-    let ch = 0;
-    const isOdd = num.length % 2 !== 0;
+    let sum = 0;
+    // Проверяем на нечётное значение
+    const isOddLength = num.length % 2 !== 0;
+    // Интерация строки
     for (let i = 0; i < num.length; i++) {
-        let n = parseInt(num[i], 10);
-        if (isOdd ? i % 2 === 0 : i % 2 !== 0)
-            n *= 2;
-        if (n > 9)
-            n -= 9;
-        ch += n;
+        // Преобразование символа в число
+        let digit = Number(num[i]);
+        // Позиция соответствует условию проверки, удваиваем значение
+        if ((isOddLength && i % 2 === 0) || (!isOddLength && i % 2 !== 0)) {
+            digit *= 2;
+            // Удвоенное значение больше 9, вычитаем 9
+            if (digit > 9)
+                digit -= 9;
+        }
+        // Добавление значения к общей сумме
+        sum += digit;
     }
-    return ch % 10 === 0;
+    // Проверяем деление суммы на 10 без остатка
+    return sum % 10 === 0;
 };
 /* Проверка типа данных ----------------------------------------------------------------------------------------------------------------- */
 const useCheckType = (value) => {
-    let regex = /^\[object (\S+?)\]$/;
-    let matches = Object.prototype.toString.call(value).match(regex) || [];
-    return (matches[1] || "undefined").toLowerCase();
+    var _a, _b;
+    const regex = /^\[object (\S+?)\]$/;
+    const matches = (_a = Object.prototype.toString.call(value).match(regex)) !== null && _a !== void 0 ? _a : [];
+    return ((_b = matches[1]) !== null && _b !== void 0 ? _b : "undefined").toLowerCase();
 };
 /* Массив случайных чисел --------------------------------------------------------------------------------------------------------------- */
-const useRandomArray = (number) => {
-    return Array.from({ length: number }, () => Math.floor(Math.random() * 2));
+const useRandomArray = (length) => {
+    return Array.from({ length }, () => Math.floor(Math.random() * 2));
 };
 
 export { CreateLinkedList, Node, useBinarySearch, useCheckCreditCard, useCheckType, useFlashSort, useHEXToRGB, useHSLAToRGBA, useHasClass, useHashMap, useInsertionSort, useMergeSort, useNumberFormat, useQuickSort, useRGBAToHEX, useRGBToHEX, useRandomArray, useTimSort, useUUID4 };

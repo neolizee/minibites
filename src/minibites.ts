@@ -102,19 +102,27 @@ export const useHSLAToRGBA = (hue: number, saturation: number, lightness: number
 /* Бинарный поиск ----------------------------------------------------------------------------------------------------------------------- */
 
 export const useBinarySearch = (collection: number[], target: number): number => {
+  if (!Array.isArray(collection) || collection.length === 0) {
+    throw new Error("Значение не может быть пустым массивом!");
+  }
+
   let low = 0;
   let high = collection.length - 1;
+
   while (low <= high) {
     const mid = Math.floor((low + high) / 2);
-    if (target === collection[mid]) {
+    const midValue = collection[mid];
+
+    if (target === midValue) {
       return mid;
     }
-    if (target > collection[mid]) {
-      low = mid + 1;
-    } else {
+    if (target < midValue) {
       high = mid - 1;
+    } else {
+      low = mid + 1;
     }
   }
+
   return -1;
 };
 
@@ -203,59 +211,67 @@ export const useTimSort = (collection: number[]): number[] => {
 
 /* Сортировка Flash --------------------------------------------------------------------------------------------------------------------- */
 
-export const useFlashSort = (collection: number[]) => {
+export const useFlashSort = (collection: number[]): number[] => {
   const n = collection.length;
-  if (n <= 1) return collection;
 
-  let min = Math.min(...collection);
-  let max = Math.max(...collection);
-  if (min === max) return collection;
+  if (n <= 1) return collection; // Коллекция отсортирована
+
+  const min = Math.min(...collection);
+  const max = Math.max(...collection);
+
+  if (min === max) return collection; // Все элементы равны
 
   const m = Math.floor(0.45 * n);
   const l = new Array(m).fill(0);
   const c1 = (m - 1) / (max - min);
 
+  // Подсчёт количества элементов в каждом блоке
   collection.forEach((num) => {
     const k = Math.floor(c1 * (num - min));
     l[k]++;
   });
 
+  // Преобразование левых границ блока в префиксные суммы
   for (let p = 1; p < m; ++p) {
     l[p] += l[p - 1];
   }
 
-  let hold = collection[0];
-  collection[0] = collection[collection.indexOf(max)];
-  collection[collection.indexOf(max)] = hold;
+  // Сортировка максимального элемента в начало
+  const maxIndex = collection.lastIndexOf(max);
+  [collection[0], collection[maxIndex]] = [collection[maxIndex], collection[0]];
 
   let move = 0;
   let j = 0;
   let k = m - 1;
 
+  // Основная часть сортировки
   while (move < n - 1) {
     while (j > l[k] - 1) {
       ++j;
       k = Math.floor(c1 * (collection[j] - min));
     }
+
     if (k < 0) break;
+
     let flash = collection[j];
     while (j !== l[k]) {
       k = Math.floor(c1 * (flash - min));
-      hold = collection[--l[k]];
+      const hold = collection[--l[k]];
       collection[l[k]] = flash;
       flash = hold;
       ++move;
     }
   }
 
-  for (j = 1; j < n; j++) {
-    hold = collection[j];
-    let i = j - 1;
-    while (i >= 0 && collection[i] > hold) {
-      collection[i + 1] = collection[i];
-      i--;
+  // Вставка окончательной сортировки
+  for (let i = 1; i < n; i++) {
+    const hold = collection[i];
+    let j = i - 1;
+    while (j >= 0 && collection[j] > hold) {
+      collection[j + 1] = collection[j];
+      j--;
     }
-    collection[i + 1] = hold;
+    collection[j + 1] = hold;
   }
 
   return collection;
@@ -263,13 +279,21 @@ export const useFlashSort = (collection: number[]) => {
 
 /* Форматирование в HashMap ------------------------------------------------------------------------------------------------------------- */
 
-export const useHashMap = (collection: any[], property: string) => {
-  // Проверяем наличие входных значений || []
+export const useHashMap = <T>(collection: T[], property: keyof T): Map<any, T> => {
   if (!collection || !property) {
     return new Map();
   }
 
-  return new Map(collection.map((item) => [item[property], item]));
+  return new Map(
+    collection.map((item: any) => {
+      if (property in item) {
+        return [item[property], item];
+      } else {
+        console.warn("Свойство не найдено!");
+        return ["", item];
+      }
+    })
+  );
 };
 
 /* Связанный список --------------------------------------------------------------------------------------------------------------------- */
@@ -345,36 +369,50 @@ export class CreateLinkedList {
   }
 }
 
-/* Проверка корректности ввода номера банковской карты (Алгоритм Луна) ------------------------------------------------------------------------- */
+/* Проверка корректности ввода номера банковской карты (Алгоритм Луна) ------------------------------------------------------------------ */
 
-export const useCheckCreditCard = (number: number): boolean => {
-  const num = String(number).replace(/\D/g, "");
-  if (num === "") return false;
+export const useCheckCreditCard = (number: string): boolean => {
+  // Оставляем только цифры
+  const num = number.replace(/\D/g, "");
 
-  let ch = 0;
-  const isOdd = num.length % 2 !== 0;
+  // Проверяем на пустое значение
+  if (num.length === 0) return false;
 
+  let sum = 0;
+  // Проверяем на нечётное значение
+  const isOddLength = num.length % 2 !== 0;
+
+  // Интерация строки
   for (let i = 0; i < num.length; i++) {
-    let n = parseInt(num[i], 10);
-    if (isOdd ? i % 2 === 0 : i % 2 !== 0) n *= 2;
-    if (n > 9) n -= 9;
-    ch += n;
+    // Преобразование символа в число
+    let digit = Number(num[i]);
+
+    // Позиция соответствует условию проверки, удваиваем значение
+    if ((isOddLength && i % 2 === 0) || (!isOddLength && i % 2 !== 0)) {
+      digit *= 2;
+      // Удвоенное значение больше 9, вычитаем 9
+      if (digit > 9) digit -= 9;
+    }
+
+    // Добавление значения к общей сумме
+    sum += digit;
   }
 
-  return ch % 10 === 0;
+  // Проверяем деление суммы на 10 без остатка
+  return sum % 10 === 0;
 };
 
 /* Проверка типа данных ----------------------------------------------------------------------------------------------------------------- */
 
-export const useCheckType = (value: any) => {
-  let regex = /^\[object (\S+?)\]$/;
-  let matches = Object.prototype.toString.call(value).match(regex) || [];
+export const useCheckType = (value: unknown): string => {
+  const regex = /^\[object (\S+?)\]$/;
+  const matches = Object.prototype.toString.call(value).match(regex) ?? [];
 
-  return (matches[1] || "undefined").toLowerCase();
+  return (matches[1] ?? "undefined").toLowerCase();
 };
 
 /* Массив случайных чисел --------------------------------------------------------------------------------------------------------------- */
 
-export const useRandomArray = (number: number) => {
-  return Array.from({ length: number }, () => Math.floor(Math.random() * 2));
+export const useRandomArray = (length: number): number[] => {
+  return Array.from({ length }, () => Math.floor(Math.random() * 2));
 };

@@ -11,7 +11,7 @@ export declare const useInsertionSort: (collection: number[], low: number, high:
 export declare const useMergeSort: (collection: number[], low: number, mid: number, high: number) => void;
 export declare const useTimSort: (collection: number[]) => number[];
 export declare const useFlashSort: (collection: number[]) => number[];
-export declare const useHashMap: (collection: any[], property: string) => Map<any, any>;
+export declare const useHashMap: <T>(collection: T[], property: keyof T) => Map<any, T>;
 export declare class Node {
     value: any;
     next: Node | null;
@@ -25,6 +25,6 @@ export declare class CreateLinkedList {
     delete(value: any): void;
     find(value: any): Node | null;
 }
-export declare const useCheckCreditCard: (number: number) => boolean;
-export declare const useCheckType: (value: any) => string;
-export declare const useRandomArray: (number: number) => number[];
+export declare const useCheckCreditCard: (number: string) => boolean;
+export declare const useCheckType: (value: unknown) => string;
+export declare const useRandomArray: (length: number) => number[];
