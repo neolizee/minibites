@@ -24,22 +24,18 @@ export const useNumberFormat = (number: number, maximumFractionDigits: number = 
   return "";
 };
 
-/* Вычисление факториала ---------------------------------------------------------------------------------------------------------------- */
-
-export const useFactorial = (number: number): number => (number <= 1 ? number : number * useFactorial(number - 1));
-
 /* Создание UUID v4 --------------------------------------------------------------------------------------------------------------------- */
 
-export const useUUID = (): string => crypto.randomUUID();
+export const useUUID4 = (): string => crypto.randomUUID();
 
 /* Форматирование HEX в RGB ------------------------------------------------------------------------------------------------------------- */
 
-export const useHEXToRGB = (hex: string): { r: number; g: number; b: number } => {
+export const useHEXToRGB = (hex: string): string => {
   const bigint = parseInt(hex.substring(1), 16);
-  const r = (bigint >> 16) & 255;
-  const g = (bigint >> 8) & 255;
-  const b = bigint & 255;
-  return { r, g, b };
+  const red = (bigint >> 16) & 255;
+  const green = (bigint >> 8) & 255;
+  const blue = bigint & 255;
+  return `rgb(${red}, ${green}, ${blue})`;
 };
 
 /* Форматирование RGB в HEX ------------------------------------------------------------------------------------------------------------- */
@@ -65,6 +61,44 @@ export const useRGBAToHEX = (r: number, g: number, b: number, a: number): string
     );
 };
 
+/* Форматирование HSLA в RGBA ----------------------------------------------------------------------------------------------------------- */
+
+export const useHSLAToRGBA = (hue: number, saturation: number, lightness: number, alpha: number): string => {
+  saturation /= 100;
+  lightness /= 100;
+  const chroma = (1 - Math.abs(2 * lightness - 1)) * saturation;
+  const intermediate = chroma * (1 - Math.abs(((hue / 60) % 2) - 1));
+  const adjust = lightness - chroma / 2;
+  let [red, green, blue] = [0, 0, 0];
+
+  switch (true) {
+    case hue < 60:
+      [red, green, blue] = [chroma, intermediate, 0];
+      break;
+    case hue < 120:
+      [red, green, blue] = [intermediate, chroma, 0];
+      break;
+    case hue < 180:
+      [red, green, blue] = [0, chroma, intermediate];
+      break;
+    case hue < 240:
+      [red, green, blue] = [0, intermediate, chroma];
+      break;
+    case hue < 300:
+      [red, green, blue] = [intermediate, 0, chroma];
+      break;
+    default:
+      [red, green, blue] = [chroma, 0, intermediate];
+      break;
+  }
+
+  red = Math.round((red + adjust) * 255);
+  green = Math.round((green + adjust) * 255);
+  blue = Math.round((blue + adjust) * 255);
+
+  return `rgba(${red}, ${green}, ${blue}, ${alpha})`;
+};
+
 /* Бинарный поиск ----------------------------------------------------------------------------------------------------------------------- */
 
 export const useBinarySearch = (collection: number[], target: number): number => {
@@ -84,7 +118,7 @@ export const useBinarySearch = (collection: number[], target: number): number =>
   return -1;
 };
 
-/* Сортировка Quick ----------------------------------------------------------------------------------------------------------------- */
+/* Сортировка Quick --------------------------------------------------------------------------------------------------------------------- */
 
 export const useQuickSort = (collection: number[]): number[] => {
   if (collection.length <= 1) return collection;
@@ -102,7 +136,7 @@ export const useQuickSort = (collection: number[]): number[] => {
   return [...useQuickSort(low), target, ...useQuickSort(high)];
 };
 
-/* Сортировка Insertion ------------------------------------------------------------------------------------------------------------------- */
+/* Сортировка Insertion ----------------------------------------------------------------------------------------------------------------- */
 
 export const useInsertionSort = (collection: number[], low: number, high: number) => {
   for (let i = low + 1; i <= high; i++) {
@@ -116,7 +150,7 @@ export const useInsertionSort = (collection: number[], low: number, high: number
   }
 };
 
-/* Сортировка Merge ------------------------------------------------------------------------------------------------------------------- */
+/* Сортировка Merge --------------------------------------------------------------------------------------------------------------------- */
 
 export const useMergeSort = (collection: number[], low: number, mid: number, high: number) => {
   let left = collection.slice(low, mid + 1);
@@ -149,7 +183,7 @@ export const useMergeSort = (collection: number[], low: number, mid: number, hig
   }
 };
 
-/* Сортировка Tim ------------------------------------------------------------------------------------------------------------------- */
+/* Сортировка Tim ----------------------------------------------------------------------------------------------------------------------- */
 
 export const useTimSort = (collection: number[]): number[] => {
   const start = 32;
@@ -167,7 +201,67 @@ export const useTimSort = (collection: number[]): number[] => {
   return collection;
 };
 
-/* Форматирование в HashMap --------------------------------------------------------------------------------------------------------- */
+/* Сортировка Flash --------------------------------------------------------------------------------------------------------------------- */
+
+export const useFlashSort = (collection: number[]) => {
+  const n = collection.length;
+  if (n <= 1) return collection;
+
+  let min = Math.min(...collection);
+  let max = Math.max(...collection);
+  if (min === max) return collection;
+
+  const m = Math.floor(0.45 * n);
+  const l = new Array(m).fill(0);
+  const c1 = (m - 1) / (max - min);
+
+  collection.forEach((num) => {
+    const k = Math.floor(c1 * (num - min));
+    l[k]++;
+  });
+
+  for (let p = 1; p < m; ++p) {
+    l[p] += l[p - 1];
+  }
+
+  let hold = collection[0];
+  collection[0] = collection[collection.indexOf(max)];
+  collection[collection.indexOf(max)] = hold;
+
+  let move = 0;
+  let j = 0;
+  let k = m - 1;
+
+  while (move < n - 1) {
+    while (j > l[k] - 1) {
+      ++j;
+      k = Math.floor(c1 * (collection[j] - min));
+    }
+    if (k < 0) break;
+    let flash = collection[j];
+    while (j !== l[k]) {
+      k = Math.floor(c1 * (flash - min));
+      hold = collection[--l[k]];
+      collection[l[k]] = flash;
+      flash = hold;
+      ++move;
+    }
+  }
+
+  for (j = 1; j < n; j++) {
+    hold = collection[j];
+    let i = j - 1;
+    while (i >= 0 && collection[i] > hold) {
+      collection[i + 1] = collection[i];
+      i--;
+    }
+    collection[i + 1] = hold;
+  }
+
+  return collection;
+};
+
+/* Форматирование в HashMap ------------------------------------------------------------------------------------------------------------- */
 
 export const useHashMap = (collection: any[], property: string) => {
   // Проверяем наличие входных значений || []
@@ -250,3 +344,37 @@ export class CreateLinkedList {
     return null;
   }
 }
+
+/* Проверка корректности ввода номера банковской карты (Алгоритм Луна) ------------------------------------------------------------------------- */
+
+export const useCheckCreditCard = (number: number): boolean => {
+  const num = String(number).replace(/\D/g, "");
+  if (num === "") return false;
+
+  let ch = 0;
+  const isOdd = num.length % 2 !== 0;
+
+  for (let i = 0; i < num.length; i++) {
+    let n = parseInt(num[i], 10);
+    if (isOdd ? i % 2 === 0 : i % 2 !== 0) n *= 2;
+    if (n > 9) n -= 9;
+    ch += n;
+  }
+
+  return ch % 10 === 0;
+};
+
+/* Проверка типа данных ----------------------------------------------------------------------------------------------------------------- */
+
+export const useCheckType = (value: any) => {
+  let regex = /^\[object (\S+?)\]$/;
+  let matches = Object.prototype.toString.call(value).match(regex) || [];
+
+  return (matches[1] || "undefined").toLowerCase();
+};
+
+/* Массив случайных чисел --------------------------------------------------------------------------------------------------------------- */
+
+export const useRandomArray = (number: number) => {
+  return Array.from({ length: number }, () => Math.floor(Math.random() * 2));
+};

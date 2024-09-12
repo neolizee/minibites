@@ -14,20 +14,24 @@ npm i minibites
 - [Форматирование HEX в RGB](#Форматирование-HEX-в-RGB)
 - [Форматирование RGB в HEX](#Форматирование-RGB-в-HEX)
 - [Форматирование RGBA в HEX](#Форматирование-RGBA-в-HEX)
+- [Форматирование HSLA в RGBA](#Форматирование-HSLA-в-RGBA)
 - [Проверка класса HTML элемента](#Проверка-класса-HTML-элемента)
+- [Проверка типа данных](#Проверка-типа-данных)
+- [Проверка корректности ввода номера банковской карты (Алгоритм Луна)](<#Проверка-корректности-ввода-номера-банковской-карты-(Алгоритм-Луна)>)
 - [Бинарный поиск](#Бинарный-поиск)
 - [Форматирование в денежную единицу Российской Федерации](#Форматирование-в-денежную-единицу-Российской-Федерации)
-- [Вычисление факториала](#Вычисление-факториала)
 - [Сортировка Quick](#Сортировка-Quick)
 - [Сортировка Tim](#Сортировка-Tim)
+- [Сортировка Flash](#Сортировка-Flash)
 - [Форматирование массива в HashMap](#Форматирование-массива-в-HashMap)
+- [Массив случайных чисел](#Массив-случайных-чисел)
 
 ### Создание UUID v4
 
 ```js
-import { useUUID } from "minibites";
+import { useUUID4 } from "minibites";
 
-console.log(useUUID());
+console.log(useUUID4());
 ```
 
 ### Форматирование HEX в RGB
@@ -54,12 +58,36 @@ import { useRGBAToHEX } from "minibites";
 console.log(useRGBAToHEX(255, 255, 255, 0.5));
 ```
 
+### Форматирование HSLA в RGBA
+
+```js
+import { useHSLAToRGBA } from "minibites";
+
+console.log(useHSLAToRGBA(100, 50, 50, 0.5));
+```
+
 ### Проверка класса HTML элемента
 
 ```js
 import { useHasClass } from "minibites";
 
 console.log(useHasClass(document.querySelector("#element"), "className"));
+```
+
+### Проверка типа данных
+
+```js
+import { useCheckType } from "minibites";
+
+console.log(useCheckType({}));
+```
+
+### Проверка корректности ввода номера банковской карты (Алгоритм Луна)
+
+```js
+import { useCheckCreditCard } from "minibites";
+
+console.log(useCheckCreditCard(1234567812345670));
 ```
 
 ### Бинарный поиск
@@ -78,14 +106,6 @@ import { useNumberFormat } from "minibites";
 console.log(useNumberFormat(5000, 2));
 ```
 
-### Вычисление факториала
-
-```js
-import { useFactorial } from "minibites";
-
-console.log(useFactorial(3));
-```
-
 ### Сортировка Quick
 
 ```js
@@ -102,9 +122,17 @@ import { useTimSort, useInsertionSort, useMergeSort } from "minibites";
 console.log(useTimSort([60, 80, 30, 25, 5, 100]));
 ```
 
+### Сортировка Flash
+
+```js
+import { useFlashSort } from "minibites";
+
+console.log(useFlashSort([60, 80, 30, 25, 5, 100]));
+```
+
 ### Форматирование массива в HashMap
 
-HashMap — это структура данных, которая позволяет хранить и быстро находить данные по уникальным ключам.
+HashMap - это структура данных, которая позволяет хранить и быстро находить данные по уникальным ключам.
 
 ```js
 import { useHashMap } from "minibites";
@@ -118,28 +146,60 @@ console.log(
     "user"
   )
 );
+```
 
-// Поиск элемента
+Поиск элемента
+
+```js
 useHashMap.get("String");
+```
 
-// Добавление элемента
+Добавление элемента
+
+```js
 useHashMap.set("String", newItem);
+```
 
-// Удаление элемента
+Удаление элемента
+
+```js
 useHashMap.delete("String");
+```
 
-// Проверка элемента
+Проверка элемента
+
+```js
 useHashMap.has("String");
+```
 
-// Интерация по ключам
+Интерация по ключам
+
+```js
 useHashMap.keys();
+```
 
-// Интерация по значениям
+Интерация по значениям
+
+```js
 useHashMap.values();
+```
 
-// Вывести количество элементов
+Вывести количество элементов
+
+```js
 useHashMap.size();
+```
 
-// Удаление всех элементов
+Удаление всех элементов
+
+```js
 useHashMap.clear();
+```
+
+### Массив случайных чисел
+
+```js
+import { useRandomArray } from "minibites";
+
+console.log(useRandomArray(10));
 ```

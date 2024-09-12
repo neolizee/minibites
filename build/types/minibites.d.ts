@@ -1,19 +1,16 @@
 export declare const useHasClass: (element: HTMLElement | null, className: string) => boolean;
 export declare const useNumberFormat: (number: number, maximumFractionDigits?: number) => string;
-export declare const useFactorial: (number: number) => number;
-export declare const useUUID: () => string;
-export declare const useHEXToRGB: (hex: string) => {
-    r: number;
-    g: number;
-    b: number;
-};
+export declare const useUUID4: () => string;
+export declare const useHEXToRGB: (hex: string) => string;
 export declare const useRGBToHEX: (r: number, g: number, b: number) => string;
 export declare const useRGBAToHEX: (r: number, g: number, b: number, a: number) => string;
+export declare const useHSLAToRGBA: (hue: number, saturation: number, lightness: number, alpha: number) => string;
 export declare const useBinarySearch: (collection: number[], target: number) => number;
 export declare const useQuickSort: (collection: number[]) => number[];
 export declare const useInsertionSort: (collection: number[], low: number, high: number) => void;
 export declare const useMergeSort: (collection: number[], low: number, mid: number, high: number) => void;
 export declare const useTimSort: (collection: number[]) => number[];
+export declare const useFlashSort: (collection: number[]) => number[];
 export declare const useHashMap: (collection: any[], property: string) => Map<any, any>;
 export declare class Node {
     value: any;
@@ -28,3 +25,6 @@ export declare class CreateLinkedList {
     delete(value: any): void;
     find(value: any): Node | null;
 }
+export declare const useCheckCreditCard: (number: number) => boolean;
+export declare const useCheckType: (value: any) => string;
+export declare const useRandomArray: (number: number) => number[];
