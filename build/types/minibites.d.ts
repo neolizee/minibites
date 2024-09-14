@@ -27,4 +27,4 @@ export declare class CreateLinkedList {
 }
 export declare const useCheckCreditCard: (number: string) => boolean;
 export declare const useCheckType: (value: unknown) => string;
-export declare const useRandomArray: (length: number) => number[];
+export declare const useBMSearch: (text: string, pattern: string) => number[];

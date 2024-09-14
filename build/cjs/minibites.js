@@ -84,7 +84,7 @@ const useHSLAToRGBA = (hue, saturation, lightness, alpha) => {
 /* Бинарный поиск ----------------------------------------------------------------------------------------------------------------------- */
 const useBinarySearch = (collection, target) => {
     if (!Array.isArray(collection) || collection.length === 0) {
-        throw new Error("Значение не может быть пустым массивом!");
+        throw new Error("Коллекция не может быть пустым массивом!");
     }
     let low = 0;
     let high = collection.length - 1;
@@ -344,13 +344,47 @@ const useCheckType = (value) => {
     const matches = (_a = Object.prototype.toString.call(value).match(regex)) !== null && _a !== void 0 ? _a : [];
     return ((_b = matches[1]) !== null && _b !== void 0 ? _b : "undefined").toLowerCase();
 };
-/* Массив случайных чисел --------------------------------------------------------------------------------------------------------------- */
-const useRandomArray = (length) => {
-    return Array.from({ length }, () => Math.floor(Math.random() * 2));
+/* Точный поиск подстроки в строке, алгоритм Бойера - Мура -------------------------------------------------------------------------------------- */
+const useBMSearch = (text, pattern) => {
+    var _a, _b, _c;
+    const textLength = text.length;
+    const patternLength = pattern.length;
+    // Проверка пустого значения или шаблона
+    if (patternLength === 0 || textLength < patternLength) {
+        return [];
+    }
+    // Создание таблицы последствий
+    const badCharShift = new Map();
+    for (let i = 0; i < patternLength; i++) {
+        badCharShift.set(pattern[i], i);
+    }
+    const result = [];
+    let s = 0; // Проверка смещения
+    while (s <= textLength - patternLength) {
+        let j = patternLength - 1;
+        // Сравниваем паттерн с текстом справа налево
+        while (j >= 0 && pattern[j] === text[s + j]) {
+            j--;
+        }
+        if (j < 0) {
+            // Совпадения есть, добавляем в результат
+            result.push(s);
+            // Переходим на следующий шаблон
+            const badChar = (_a = text[s + patternLength]) !== null && _a !== void 0 ? _a : "";
+            s += patternLength - ((_b = badCharShift.get(badChar)) !== null && _b !== void 0 ? _b : -1);
+        }
+        else {
+            // Сдвигаемся по плохому символу
+            const badChar = text[s + j];
+            s += Math.max(1, j - ((_c = badCharShift.get(badChar)) !== null && _c !== void 0 ? _c : -1));
+        }
+    }
+    return result;
 };
 
 exports.CreateLinkedList = CreateLinkedList;
 exports.Node = Node;
+exports.useBMSearch = useBMSearch;
 exports.useBinarySearch = useBinarySearch;
 exports.useCheckCreditCard = useCheckCreditCard;
 exports.useCheckType = useCheckType;
@@ -365,6 +399,5 @@ exports.useNumberFormat = useNumberFormat;
 exports.useQuickSort = useQuickSort;
 exports.useRGBAToHEX = useRGBAToHEX;
 exports.useRGBToHEX = useRGBToHEX;
-exports.useRandomArray = useRandomArray;
 exports.useTimSort = useTimSort;
 exports.useUUID4 = useUUID4;

@@ -103,7 +103,7 @@ export const useHSLAToRGBA = (hue: number, saturation: number, lightness: number
 
 export const useBinarySearch = (collection: number[], target: number): number => {
   if (!Array.isArray(collection) || collection.length === 0) {
-    throw new Error("Значение не может быть пустым массивом!");
+    throw new Error("Коллекция не может быть пустым массивом!");
   }
 
   let low = 0;
@@ -411,8 +411,46 @@ export const useCheckType = (value: unknown): string => {
   return (matches[1] ?? "undefined").toLowerCase();
 };
 
-/* Массив случайных чисел --------------------------------------------------------------------------------------------------------------- */
+/* Точный поиск подстроки в строке, алгоритм Бойера - Мура -------------------------------------------------------------------------------------- */
 
-export const useRandomArray = (length: number): number[] => {
-  return Array.from({ length }, () => Math.floor(Math.random() * 2));
+export const useBMSearch = (text: string, pattern: string): number[] => {
+  const textLength = text.length;
+  const patternLength = pattern.length;
+
+  // Проверка пустого значения или шаблона
+  if (patternLength === 0 || textLength < patternLength) {
+    return [];
+  }
+
+  // Создание таблицы последствий
+  const badCharShift = new Map<string, number>();
+  for (let i = 0; i < patternLength; i++) {
+    badCharShift.set(pattern[i], i);
+  }
+
+  const result: number[] = [];
+  let s = 0; // Проверка смещения
+
+  while (s <= textLength - patternLength) {
+    let j = patternLength - 1;
+
+    // Сравниваем паттерн с текстом справа налево
+    while (j >= 0 && pattern[j] === text[s + j]) {
+      j--;
+    }
+
+    if (j < 0) {
+      // Совпадения есть, добавляем в результат
+      result.push(s);
+      // Переходим на следующий шаблон
+      const badChar = text[s + patternLength] ?? "";
+      s += patternLength - (badCharShift.get(badChar) ?? -1);
+    } else {
+      // Сдвигаемся по плохому символу
+      const badChar = text[s + j];
+      s += Math.max(1, j - (badCharShift.get(badChar) ?? -1));
+    }
+  }
+
+  return result;
 };
